@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Code Form</title>
+    <style>
+        /* Your CSS styles */
+        body {
+            font-family: Montserrat, sans-serif;
+            background-color: #c6c6c6;
+            margin: 0;
+            padding: 0;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease; /* انیمیشن برای تغییرهای گوشه و سایه */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        select,
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            transition: all 0.3s ease; /* انیمیشن برای تغییرهای ورودی */
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(to right, #1e30f3, #e21e80);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #e21e80, #1e30f3);
+        }
+
+        /* Loading Overlay Styles */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
+            z-index: 9999; /* Ensure it's on top of other elements */
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .loading-spinner {
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite; /* Spin animation */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <form action="{% url 'generate_code' %}" method="post" id="codeForm" onsubmit="showLoading()">
+        {% csrf_token %}
+        <label for="brand">Brand:</label>
+        <select id="brand" name="brand" onchange="updateModels()" required>
+            <option value="">Select a Brand</option>
+            <option value="Siemens">Siemens</option>
+            <option value="Fatek">Fatek</option>
+            <option value="Allen-Bradley">Allen-Bradley</option>
+            <option value="Schneider Electric">Schneider Electric</option>
+            <option value="Mitsubishi Electric">Mitsubishi Electric</option>
+            <option value="Omron">Omron</option>
+            <!-- Add more options for other brands as needed -->
+        </select><br><br>
+        
+        <label for="model">Model:</label>
+        <select id="model" name="model" required>
+            <option value="">Select a Model</option>
+        </select><br><br>
+
+        <label for="digital_input_ports">Digital Input Ports:</label>
+        <input type="number" id="digital_input_ports" name="digital_input_ports" required><br><br>
+
+        <label for="digital_output_ports">Digital Output Ports:</label>
+        <input type="number" id="digital_output_ports" name="digital_output_ports" required><br><br>
+
+        <label for="analog_input_ports">Analog Input Ports:</label>
+        <input type="number" id="analog_input_ports" name="analog_input_ports" required><br><br>
+
+        <label for="analog_output_ports">Analog Output Ports:</label>
+        <input type="number" id="analog_output_ports" name="analog_output_ports" required><br><br>
+
+        <label for="custom_param">Custom Parameter:</label>
+        <input type="text" id="custom_param" name="custom_param" required><br><br>
+
+        <button type="submit">کد را بساز</button>
+        <br><br><br>
+
+    </form>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <script>
+        // Your JavaScript code
+        function updateModels() {
+            var brandSelect = document.getElementById("brand");
+            var modelSelect = document.getElementById("model");
+            var selectedBrand = brandSelect.value;
+            var options = {
+                "Siemens": ["Simatic S7-1200", "Simatic S7-1500", "Simatic S7-300", "Simatic S7-200", "Simatic S7-400"],
+                "Fatek": ["FBS Series", "FBs-PLC Series", "FB Series", "FBe Series", "FBe-PLC Series","FBn Series"],
+                "Allen-Bradley": ["MicroLogix 1100", "MicroLogix 1400", "CompactLogix 5370", "ControlLogix 5570", "PLC-5"],
+                "Schneider Electric": ["Modicon M340", "Modicon M580", "Modicon M221", "Modicon Premium", "Modicon Quantum"],
+                "Mitsubishi Electric": ["FX3U", "Q Series", "iQ-F", "iQ-R", "Alpha 2"],
+                "Omron": ["CP1E", "CP1L", "CP1H", "CJ2M", "CJ1M"]
+                // Add more brands and models as needed
+            };
+
+            // Clear existing options
+            modelSelect.innerHTML = "<option value=''>Select a Model</option>";
+
+            // Add models based on the selected brand
+            var brandModels = options[selectedBrand];
+            for (var i = 0; i < brandModels.length; i++) {
+                var option = document.createElement("option");
+                option.text = brandModels[i];
+                option.value = brandModels[i];
+                modelSelect.add(option);
+            }
+        }
+
+        function showLoading() {
+            var loadingOverlay = document.getElementById("loadingOverlay");
+            loadingOverlay.style.display = "flex";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<style>
+    /* General styles */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Navbar styles */
+    .navbar {
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-brand {
+        font-weight: bold;
+        color: #1e30f3;
+    }
+
+    .navbar-toggler {
+        border: none;
+        background-color: transparent;
+    }
+
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(0, 0, 0, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    .collapse.navbar-collapse {
+        justify-content: space-between;
+    }
+
+    .navbar-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .nav-item {
+        margin-bottom: 10px;
+    }
+
+    .nav-link {
+        color: #333;
+        transition: color 0.3s;
+    }
+
+    .nav-link:hover {
+        color: #1e30f3;
+    }
+
+    /* Media query for mobile responsiveness */
+    @media (min-width: 768px) {
+        .navbar-nav {
+            flex-direction: row;
+        }
+
+        .nav-item {
+            margin-bottom: 0;
+            margin-left: 10px;
+        }
+    }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
+    <div class="container px-5">
+
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <a href="{% url 'HOME' %}" style="text-decoration: none; color: inherit;">PLC AI</a>
+</button>
+
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            </ul>
+        </div>
+    </div>
+</nav>
